@@ -39,5 +39,7 @@ Além dos processos descritos para realizar o primeiro commit, faz-se necessário:
 2. Rodar ssh-keygen para gerar chaves pública e privada, upload da chave pública para o github.com. Isso faz-se necessário para não precisar ficar digitando usuário e senha a toda hora.
 
 3. Configurar nome do usuário e email, respectivamente:
-git config --global user.name "Eduardo Maia"
-git config --global user.email "maia@eduardomaia.com"
+
+*git config --global user.name "Eduardo Maia"*
+
+*git config --global user.email "maia@eduardomaia.com"*
