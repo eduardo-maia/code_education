@@ -40,6 +40,6 @@ Além dos processos descritos para realizar o primeiro commit, faz-se necessário:
 
 3. Configurar nome do usuário e email, respectivamente:
 
-*git config --global user.name "Eduardo Maia"*
+>*git config --global user.name "Eduardo Maia"*
 
-*git config --global user.email "maia@eduardomaia.com"*
+>*git config --global user.email "maia@eduardomaia.com"*
