@@ -14,19 +14,19 @@ Na caixa "HTTPS clone URL", cliquei para copiar para o clipboard o url para clon
 
 Com o url no clipboard, voltei para o git bash, e digitei:
 
-git clone https://github.com/eduardo-maia/code_education.git
+>git clone https://github.com/eduardo-maia/code_education.git
 
-cd code_education
+>cd code_education
 
 Abri o arquivo README.md, e coloquei este texto que está sendo lido no momento.
 
 Em seguida:
 
-git add README.md
+>git add README.md
 
-git commit -m "Alterado README.md"
+>git commit -m "Alterado README.md"
 
-git push origin master
+>git push origin master
 
 Processo finalizado.
 
