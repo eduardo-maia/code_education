@@ -1,3 +1,3 @@
 #!/usr/bin/perl
 
-print "Hello";
+print "Hello, world";
