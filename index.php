@@ -18,7 +18,7 @@ if (@$_GET['page'])
 		{
 			if (document.getElementById('nome').value =='' || document.getElementById('assunto').value =='' || document.getElementById('email').value =='' || document.getElementById('mensagem').value =='')
 				{
-				alert("Preencha todos os dados antes de processeguir");
+				document.getElementById('alert_message').style.display='block';
 				return false;
 				}
 			return true;
@@ -35,7 +35,7 @@ if (@$_GET['page'])
 	
 		<div class="container">
 			
-			<a href="#" class="navbar-brand">Bootstrap + PHP example</a>
+			<a href="#" class="navbar-brand">Bootstrap + PHP</a>
 			
 			<button class="navbar-toggle" data-toggle="collapse" data-target=".navHeaderCollapse">
 				<span class="icon-bar"></span>
@@ -82,6 +82,12 @@ if (@$_GET['page'])
 						break;
 					case "contato":
 				?>
+				<div class="container" id="alert_message" style=display:none;>
+					<div class="alert alert-danger">
+						Preencha todos os dados antes de prosseguir.
+					</div>
+				</div>
+				
 				<form method=post onSubmit="return validate();">
 					Nome: <input type=text name=nome id=nome>
 					<br>
