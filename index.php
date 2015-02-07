@@ -1,8 +1,15 @@
 <?php
 $page="home"; # default value
-if (@$_GET['page'])
+if ( isset($_GET['page']) )
 	{
 	$page=$_GET['page'];
+
+	$allowed_pages = array ("home"=>1,"empresa"=>1,"produtos"=>1,"servicos"=>1,"contato"=>1);
+	if ( !isset($allowed_pages[$page]) )
+		{
+		echo "Acesso negado, p&aacute;gina $page n&atilde;o encontrada.";
+		exit;
+		}
 	}
 ?>
 
@@ -12,19 +19,6 @@ if (@$_GET['page'])
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/theme.css">
-	
-	<script language="JavaScript">
-		function validate(f)
-		{
-			if (document.getElementById('nome').value =='' || document.getElementById('assunto').value =='' || document.getElementById('email').value =='' || document.getElementById('mensagem').value =='')
-				{
-				document.getElementById('alert_message').style.display='block';
-				return false;
-				}
-			return true;
-		}
-	</script>
-	
 	</head>
 
 	<body>
@@ -35,7 +29,7 @@ if (@$_GET['page'])
 	
 		<div class="container">
 			
-			<a href="#" class="navbar-brand">Bootstrap + PHP</a>
+			<a href="#" class="navbar-brand">PHP + bootstrap</a>
 			
 			<button class="navbar-toggle" data-toggle="collapse" data-target=".navHeaderCollapse">
 				<span class="icon-bar"></span>
@@ -65,56 +59,7 @@ if (@$_GET['page'])
 		<div class="jumbotron">
 			<div style='text-align:center;font-size:12pt'>
 				<?php
-				
-				switch ($page)
-					{
-					case "home":
-						echo "Home page";
-						break;
-					case "empresa":
-						echo "Pagina empresa";
-						break;
-					case "produtos":
-						echo "Pagina de produtos";
-						break;
-					case "servicos":
-						echo "Pagina de servicos";
-						break;
-					case "contato":
-				?>
-				<div class="container" id="alert_message" style=display:none;>
-					<div class="alert alert-danger">
-						Preencha todos os dados antes de prosseguir.
-					</div>
-				</div>
-				
-				<form method=post onSubmit="return validate();">
-					Nome: <input type=text name=nome id=nome>
-					<br>
-					Assunto: <input type=text name=assunto id=assunto>
-					<br>
-					Email: <input type=text name=email id=email>
-					<br>
-					Mensagem: <input type=text name=mensagem id=mensagem>
-					<input type=submit class="btn btn-default" value="Enviar">
-				</form>
-				
-				<?php
-				
-						if ( @$_POST['nome'] && @$_POST['assunto'] && @$_POST['email'] && @$_POST['mensagem'] )
-							{
-							echo "<p>Dados enviados com sucesso, abaixo seguem os dados que voce enviou:</p>";
-							echo "<p>Nome = " . $_POST['nome'] . "</p>";
-							echo "<p>Assunto = " . $_POST['assunto'] . "</p>";
-							echo "<p>Email = " . $_POST['email'] . "</p>";
-							echo "<p>Mensagem = " . $_POST['mensagem'] . "</p>";
-							}
-						break;
-					default:
-						echo "Pagina nao encontrada";
-						break;
-					}
-				
+				require_once($page . ".php");
 				?>
 			</div>
 		</div>
