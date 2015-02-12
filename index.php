@@ -1,16 +1,31 @@
 <?php
-$page="home"; # default value
-if ( isset($_GET['page']) )
-	{
-	$page=$_GET['page'];
 
-	$allowed_pages = array ("home"=>1,"empresa"=>1,"produtos"=>1,"servicos"=>1,"contato"=>1);
-	if ( !isset($allowed_pages[$page]) )
-		{
-		echo "Acesso negado, p&aacute;gina $page n&atilde;o encontrada.";
-		exit;
-		}
+function verifica_rota()
+{
+$rota = parse_url("http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+
+$path = substr($rota['path'],1,strlen($rota['path'])-1);
+
+if ($path == "")
+	{
+	return "home";
 	}
+
+# Optei por registrar as páginas em array, para não permitir acesso a arquivos que não quero que sejam acessados
+# Outra opção seria utilizar bool file_exists ( string $filename )
+$allowed_pages = array ("home"=>1,"empresa"=>1,"produtos"=>1,"servicos"=>1,"contato"=>1);  
+if ( !isset($allowed_pages[$path]) )
+	{
+	http_response_code(404);
+	echo "P&aacute;gina $page n&atilde;o encontrada.";
+	exit;
+	}
+
+return $path;
+}
+
+
+$page = verifica_rota();
 ?>
 
 <html>
@@ -39,11 +54,11 @@ if ( isset($_GET['page']) )
 			
 			<div class="collapse navbar-collapse navHeaderCollapse">
 				<ul class="nav navbar-nav navbar-right">
-					<li <?php if ($page=='home') echo 'class="active"';?>><a href="?page=home">Home</a></li>
-					<li <?php if ($page=='empresa') echo 'class="active"';?>><a href="?page=empresa">Empresa</a></li>
-					<li <?php if ($page=='produtos') echo 'class="active"';?>><a href="?page=produtos">Produtos</a></li>
-					<li <?php if ($page=='servicos') echo 'class="active"';?>><a href="?page=servicos">Servi&ccedil;os</a></li>
-					<li <?php if ($page=='contato') echo 'class="active"';?>><a href="?page=contato">Contato</a></li>
+					<li <?php if ($page=='home') echo 'class="active"';?>><a href="/">Home</a></li>
+					<li <?php if ($page=='empresa') echo 'class="active"';?>><a href="/empresa">Empresa</a></li>
+					<li <?php if ($page=='produtos') echo 'class="active"';?>><a href="/produtos">Produtos</a></li>
+					<li <?php if ($page=='servicos') echo 'class="active"';?>><a href="/servicos">Servi&ccedil;os</a></li>
+					<li <?php if ($page=='contato') echo 'class="active"';?>><a href="/contato">Contato</a></li>
 				</ul>
 					
 			</div>
