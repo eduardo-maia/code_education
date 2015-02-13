@@ -2,7 +2,6 @@
 
 function conexaoDB()
 {
-print "To aqui 1\n";
 	try
 		{
 		$config = include "config.php";
@@ -17,10 +16,8 @@ print "To aqui 1\n";
 		$dbname=(isset($config['db']['dbname'])) ? $config['db']['dbname'] : null;
 		$user=(isset($config['db']['user'])) ? $config['db']['user'] : null;
 		$password=(isset($config['db']['password'])) ? $config['db']['password'] : null;
-		
-		print "vai retornar\n";
-		
-		return new \PDO("mysql:host={$host};dbhame={$dbname}", $user,$password);
+
+		return new \PDO("mysql:host={$host};dbhame={$dbname}", $user,$password, array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
 		}
 	catch (PDOException $e) 
 		{

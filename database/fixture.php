@@ -1,17 +1,24 @@
 ﻿<?php
+# NÃO É BOA PRÁTICA ESTE ARQUIVO ESTÁ DENTRO DO http_docs OU SIMILAR.
+# MAS COMO ELE NÃO ESTÁ ACESSÍVEL VIA WEB, E TRATANDO DE EXERCICIO...
+# ELE DEVE SER EXECUTADO E MOVIDO PARA OUTRO LOCAL.
 require_once "conexaoDB.php";
 
 echo "#### Executando Fixture ####\n";
 
 $conn = conexaoDB();
-print_r($conn);
 
-# aqui era para gerar uma exceção ou warning, pois essa tabela não existe
-$sql="select * from wrongtable asasas";
-$stmt = $conn->prepare($sql);
-$stmt->execute();
+echo "Dropando database ";
+$conn->query("drop database if exists maia_education_code");
+echo " - OK\n";
 
+echo "Criando database ";
+$conn->query("create database maia_education_code");
+echo " - OK\n";
 
+echo "Usando database ";
+$conn->query("USE maia_education_code");
+echo " - OK\n";
 
 echo "Removendo tabela";
 $conn->query("DROP TABLE IF EXISTS pagina");
@@ -25,8 +32,9 @@ try
 		(
 		rota VARCHAR(45) NOT NULL NOT NULL,
 		PRIMARY KEY(rota),
-		html MEDIUMTEXT NOT NULL
-		)
+		html MEDIUMTEXT NOT NULL,
+		FULLTEXT (html)
+		) ENGINE=InnoDB;
 		");
 	}
 catch (PDOException $e)
@@ -37,18 +45,14 @@ echo " - OK\n";
 
 echo "Inserindo dados...\n";
 
-#####################################################
-# NÃO ESTOU USANDO BIND PORQUE NÃO PRECISO,
-# POIS TENHO TOTAL CONTROLE SOBRE O QUE ESTOU ESCREVENDO NA MINHA CONSULTA...
-#####################################################
 
 echo "Pagina Home";
-$q=$conn->prepare("INSERT INTO pagina (rota,html) VALUES ('home','Home<br><br>The twins of Mammon quarrelled. Their warring plunged the world into a new darkness, and the beast abhorred the darkness. So it began to move swiftly, and grew more powerful, and went forth and multiplied. And the beasts brought fire and light to the darkness.')");
+$q=$conn->prepare("INSERT INTO pagina (rota,html) VALUES ('home','Home<br>The twins of Mammon quarrelled. Their warring plunged the world into a new darkness, and the beast abhorred the darkness. So it began to move swiftly, and grew more powerful, and went forth and multiplied. And the beasts brought fire and light to the darkness.')");
 $q->execute();
 echo " - OK\n";
 
 echo "Pagina Empresa";
-$q=$conn->prepare("INSERT INTO pagina (rota,html) VALUES ('empresa','Página Empresa<br>Ninguém assistiu ao formidável enterro de tua última quimera.')");
+$q=$conn->prepare("INSERT INTO pagina (rota,html) VALUES ('empresa','Empresa<br>Ninguém assistiu ao formidável enterro de tua última quimera.')");
 $q->execute();
 echo " - OK\n";
 

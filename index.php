@@ -1,22 +1,30 @@
 <?php
+function get_page($conexao,$page)
+{
+$sql="SELECT html FROM pagina WHERE rota=:rota";
+$stmt = $conexao->prepare($sql);
+$stmt->bindValue("rota",$page);
+$stmt->execute();
+$html = $stmt->fetch(PDO::FETCH_ASSOC);
+return $html['html'];
+};
 
 function verifica_rota()
 {
 $rota = parse_url("http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
 
-$path = substr($rota['path'],1,strlen($rota['path'])-1);
+$path = substr($rota['path'],1,strlen($rota['path']));
 
 if ($path == "")
 	{
 	return "home";
 	}
 
-# Optei por registrar as páginas em array, para não permitir acesso a arquivos que não quero que sejam acessados
 $allowed_pages = array ("home"=>1,"empresa"=>1,"produtos"=>1,"servicos"=>1,"contato"=>1);
-if ( !isset($allowed_pages[$path]) || !file_exists($path.".php") )
+if ( !isset($allowed_pages[$path]) && substr($path,0,7) != "search")
 	{
 	http_response_code(404);
-	echo "P&aacute;gina $page n&atilde;o encontrada.";
+	echo "P&aacute;gina $path n&atilde;o encontrada.";
 	exit;
 	}
 
@@ -68,17 +76,83 @@ $page = verifica_rota();
 
 
 
-	<!-- HERE COMES THE PAGE CONTENT -->
+<!-- HERE COMES THE PAGE CONTENT
 	<div class="container">
 		<div class="jumbotron">
 			<div style='text-align:center;font-size:12pt'>
-				<?php
+				<php
 				require_once($page . ".php");
 				?>
 			</div>
 		</div>
 	</div>
-	<!-- END PAGE CONTENT -->
+END PAGE CONTENT -->
+
+	<div class="container">
+		<div class="jumbotron">
+			<div style='text-align:center;font-size:12pt'>
+
+				<?php
+				require_once("database/conexaoDB.php");
+				$conexao = conexaoDB();
+				
+				$sql="use maia_education_code";
+				$conexao->query($sql);
+				
+				if ($page != "search")
+					{
+					print get_page($conexao,$page);
+					}
+				else
+					{
+					if (isset($_GET["for"]) && $_GET["for"]!="")
+						{
+						$string=$_GET["for"];
+						
+						# Isso é boa prática: indexar o banco, e usar o index nas buscas
+						$sql="SELECT rota,html FROM pagina WHERE match(html) against (:string) ";
+						$stmt = $conexao->prepare($sql);
+						$stmt->bindValue("string",$string);
+						$stmt->execute();
+						$records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+						
+						if (sizeof($records)==0)
+							{
+							echo "<div align='center'>Nenhum resultado encontrado</div>";
+							}
+						else
+							{
+							foreach ($records as $record)
+								{
+								$record['html'] = str_replace($string,"<b>$string</b>", $record['html']);
+								echo "<div align=left><a style=color:black; href=" . $record['rota'] . ">" . $record['html'] . "</a></div><br>";
+								}
+							}
+						}
+					else
+						{
+						print get_page($conexao,"home");
+						}
+					}
+
+				?>
+				
+				<!-- BUSCA -->
+				<br><br>
+				
+				<form method=get action=/search>
+				<div align="center">
+					Busca: 
+					<input name=for type=type=text value="<?php echo $string?>">
+					<input type=submit value=Buscar>
+				</div>
+				<div align="center">
+						Estou usando match against, ent&atilde;o buscar por "a" n&atilde;o vai trazer resultados. Experimente: "nevermore" ou "darkness".
+				</form>
+			</div>
+		</div>
+	</div>
+
 
 
 	<script src="js/bootstrap.min.js"></script>
