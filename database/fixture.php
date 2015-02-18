@@ -34,7 +34,7 @@ try
 		PRIMARY KEY(rota),
 		html MEDIUMTEXT NOT NULL,
 		FULLTEXT (html)
-		) ENGINE=InnoDB;
+		) ENGINE=MyISAM;
 		");
 	}
 catch (PDOException $e)
