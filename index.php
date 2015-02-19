@@ -101,7 +101,11 @@ END PAGE CONTENT -->
 				$sql="use maia_education_code";
 				$conexao->query($sql);
 				
-				if ($page != "search")
+				if ($page == "contato")
+					{
+					require_once($page . ".php");
+					}
+				else if ($page != "search")
 					{
 					print get_page($conexao,$page);
 					}
