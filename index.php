@@ -110,9 +110,14 @@ END PAGE CONTENT -->
 						$string=$_GET["for"];
 						
 						# Isso é boa prática: indexar o banco, e usar o index nas buscas
-						$sql="SELECT rota,html FROM pagina WHERE match(html) against (:string) ";
+						# $sql="SELECT rota,html FROM pagina WHERE match(html) against (:string) ";
+						
+						# Isso é uma péssima prática, não utiliza indexação, mas é a única que funciona direito no MyISAM:
+						$sql="SELECT rota,html FROM pagina WHERE html LIKE :string ";
+						$termo = "%{$string}%";
+						#print $sql;
 						$stmt = $conexao->prepare($sql);
-						$stmt->bindValue("string",$string);
+						$stmt->bindValue("string",$termo);
 						$stmt->execute();
 						$records = $stmt->fetchAll(PDO::FETCH_ASSOC);
 						
@@ -146,8 +151,6 @@ END PAGE CONTENT -->
 					<input name=for type=type=text value="<?php echo $string?>">
 					<input type=submit value=Buscar>
 				</div>
-				<div align="center">
-						Estou usando match against, ent&atilde;o buscar por "a" n&atilde;o vai trazer resultados. Experimente: "nevermore" ou "darkness".
 				</form>
 			</div>
 		</div>
