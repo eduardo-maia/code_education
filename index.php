@@ -1,4 +1,6 @@
 <?php
+$string="";
+
 function get_page($conexao,$page)
 {
 $sql="SELECT html FROM pagina WHERE rota=:rota";
@@ -107,7 +109,8 @@ END PAGE CONTENT -->
 					{
 					if (isset($_GET["for"]) && $_GET["for"]!="")
 						{
-						$string=$_GET["for"];
+						# $string=$_GET["for"];
+						$string = filter_input(INPUT_GET, "for");
 						
 						# Isso é boa prática: indexar o banco, e usar o index nas buscas
 						# $sql="SELECT rota,html FROM pagina WHERE match(html) against (:string) ";
