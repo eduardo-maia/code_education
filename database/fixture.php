@@ -2,7 +2,7 @@
 # NÃO É BOA PRÁTICA ESTE ARQUIVO ESTÁ DENTRO DO http_docs OU SIMILAR.
 # MAS COMO ELE NÃO ESTÁ ACESSÍVEL VIA WEB, E TRATANDO DE EXERCICIO...
 # ELE DEVE SER EXECUTADO E MOVIDO PARA OUTRO LOCAL.
-require_once "conexaoDB.php";
+require_once "DB.php";
 
 echo "#### Executando Fixture ####\n";
 
@@ -78,7 +78,7 @@ echo " - OK\n";
 
 
 echo "Criando usuario admin";
-$q=$conn->prepare("INSERT INTO user (username,password) VALUES ('admin','" . password_hash("alomamae1", PASSWORD_DEFAULT) . "')");
+$q=$conn->prepare("INSERT INTO user (username,password) VALUES ('admin','" . getPasswordHash("alomamae1") . "')");
 $q->execute();
 echo " - OK\n";
 

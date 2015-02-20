@@ -29,8 +29,5 @@ function conexaoDB()
 
 function getPasswordHash($password)
 {
-$options = [
-	'salt' => '1234567890123456789012'
-	];
-return password_hash($password, PASSWORD_DEFAULT, $options);
+return password_hash($password, PASSWORD_DEFAULT, [	'salt' => '1234567890123456789012' ]);
 }

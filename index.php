@@ -22,7 +22,7 @@ if ($path == "")
 	return "home";
 	}
 
-$allowed_pages = array ("home"=>1,"empresa"=>1,"produtos"=>1,"servicos"=>1,"contato"=>1);
+$allowed_pages = array ("home"=>1,"empresa"=>1,"produtos"=>1,"servicos"=>1,"contato"=>1,"admin"=>1,"admin/home"=>1,"admin/empresa"=>1,"admin/produtos"=>1,"admin/servicos"=>1);
 if ( !isset($allowed_pages[$path]) && substr($path,0,7) != "search")
 	{
 	http_response_code(404);
@@ -41,13 +41,13 @@ $page = verifica_rota();
 	<head>
 		<title>Code Education</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="css/bootstrap.min.css">
-		<link rel="stylesheet" href="css/theme.css">
+		<link rel="stylesheet" href="/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/css/theme.css">
 	</head>
 
 	<body>
 
-	<script src="js/jquery-2.1.3.min.js"></script>
+	<script src="/js/jquery-2.1.3.min.js"></script>
 
 	<div class="navbar navbar-inverse navbar-static-top">
 
@@ -95,7 +95,7 @@ END PAGE CONTENT -->
 			<div style='text-align:center;font-size:12pt'>
 
 				<?php
-				require_once("database/conexaoDB.php");
+				require_once("database/DB.php");
 				$conexao = conexaoDB();
 				
 				$sql="use maia_education_code";
@@ -104,6 +104,10 @@ END PAGE CONTENT -->
 				if ($page == "contato")
 					{
 					require_once($page . ".php");
+					}
+				else if (substr($page,0,5) == "admin")
+					{
+					require_once("admin.php");
 					}
 				else if ($page != "search")
 					{
