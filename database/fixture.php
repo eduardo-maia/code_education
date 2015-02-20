@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 # NÃO É BOA PRÁTICA ESTE ARQUIVO ESTÁ DENTRO DO http_docs OU SIMILAR.
 # MAS COMO ELE NÃO ESTÁ ACESSÍVEL VIA WEB, E TRATANDO DE EXERCICIO...
 # ELE DEVE SER EXECUTADO E MOVIDO PARA OUTRO LOCAL.
@@ -25,7 +25,7 @@ $conn->query("DROP TABLE IF EXISTS pagina");
 echo " - OK\n";
 
 
-echo "Criando tabela";
+echo "Criando tabela pagina";
 try
 	{
 	$conn->query("CREATE TABLE pagina
@@ -63,6 +63,22 @@ echo " - OK\n";
 
 echo "Pagina Serviços";
 $q=$conn->prepare("INSERT INTO pagina (rota,html) VALUES ('servicos','Serviços<br>.We\'re living in the the darkness, we hate the day. We\'re hunting in the night, take your children away. Your blood is our pleasure, we want your soul. You will never die as a child of the night')");
+$q->execute();
+echo " - OK\n";
+
+echo "Criando tabela de usuarios";
+$conn->query("CREATE TABLE user
+		(
+		username VARCHAR(40) NOT NULL,
+		PRIMARY KEY(username),
+		password VARCHAR(512) NOT NULL
+		) ENGINE=MyISAM;
+		");
+echo " - OK\n";
+
+
+echo "Criando usuario admin";
+$q=$conn->prepare("INSERT INTO user (username,password) VALUES ('admin','" . password_hash("alomamae1", PASSWORD_DEFAULT) . "')");
 $q->execute();
 echo " - OK\n";
 
