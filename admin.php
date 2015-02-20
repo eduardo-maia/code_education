@@ -56,10 +56,12 @@ else
 	$stmt->execute();
 	$paginas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+	echo "<script src='//cdn.ckeditor.com/4.4.7/standard/ckeditor.js'></script>";
+
 	echo "<form method=post>";
 	foreach ($paginas as $pagina)
 		{
-		echo "<p>Rota: " . $pagina['rota'] . "<br><textarea rows=3 cols=80 name=novohtml>" . $pagina['html'] . "</textarea></p>";
+		echo "<p>Rota: " . $pagina['rota'] . "<br><textarea class=ckeditor rows=3 cols=80 name=novohtml>" . $pagina['html'] . "</textarea></p>";
 		}
 	echo "<input type=submit></form><a href=/admin>Back to admin</a>";
 	}
